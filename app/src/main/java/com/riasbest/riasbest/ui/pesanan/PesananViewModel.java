@@ -1,14 +1,14 @@
-package com.riasbest.riasbest.ui.home;
+package com.riasbest.riasbest.ui.pesanan;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class HomeViewModel extends ViewModel {
+public class PesananViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public HomeViewModel() {
+    public PesananViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("This is home fragment");
     }

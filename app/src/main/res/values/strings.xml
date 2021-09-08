@@ -2,7 +2,13 @@
     <string name="app_name">Rias Best</string>
     <string name="image">image</string>
     <string name="title_activity_homepage">MainActivity</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_home">Beranda</string>
+    <string name="title_dashboard">Pesanan</string>
+    <string name="title_notifications">Profil</string>
+
+    <string-array name="level_user">
+        <item>Pelanggan</item>
+        <item>Perias</item>
+    </string-array>
+
 </resources>

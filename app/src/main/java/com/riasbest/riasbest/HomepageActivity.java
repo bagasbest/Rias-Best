@@ -1,37 +1,64 @@
 package com.riasbest.riasbest;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import com.riasbest.riasbest.databinding.ActivityHomepageBinding;
+import com.riasbest.riasbest.ui.beranda.BerandaFragment;
+import com.riasbest.riasbest.ui.pesanan.PesananFragment;
+import com.riasbest.riasbest.ui.profil.ProfileFragment;
 
 public class HomepageActivity extends AppCompatActivity {
 
-    private ActivityHomepageBinding binding;
-
+    @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = ActivityHomepageBinding.inflate(getLayoutInflater());
+        com.riasbest.riasbest.databinding.ActivityHomepageBinding binding = ActivityHomepageBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications)
-                .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_homepage);
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-        NavigationUI.setupWithNavController(binding.navView, navController);
+        // untuk mengganti halaman contoh: halaman produk -> halaman keranjang -> halaman pemesanan/pembayaran
+        navView.setOnNavigationItemSelectedListener(item -> {
+            Fragment selectedFragment = new BerandaFragment();
+            switch (item.getItemId()) {
+                case R.id.navigation_beranda: {
+                    navView.getMenu().findItem(R.id.navigation_beranda).setEnabled(false);
+                    navView.getMenu().findItem(R.id.navigation_pesanan).setEnabled(true);
+                    navView.getMenu().findItem(R.id.navigation_profile).setEnabled(true);
+                    selectedFragment = new BerandaFragment();
+                    break;
+                }
+                case R.id.navigation_pesanan: {
+                    navView.getMenu().findItem(R.id.navigation_beranda).setEnabled(false);
+                    navView.getMenu().findItem(R.id.navigation_pesanan).setEnabled(true);
+                    navView.getMenu().findItem(R.id.navigation_profile).setEnabled(true);
+                    selectedFragment = new PesananFragment();
+                    break;
+                }
+                case R.id.navigation_profile: {
+                    navView.getMenu().findItem(R.id.navigation_beranda).setEnabled(false);
+                    navView.getMenu().findItem(R.id.navigation_pesanan).setEnabled(true);
+                    navView.getMenu().findItem(R.id.navigation_profile).setEnabled(true);
+                    selectedFragment = new ProfileFragment();
+                    break;
+                }
+                default: {
+                    navView.getMenu().findItem(R.id.navigation_beranda).setEnabled(false);
+                }
+            }
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.container, selectedFragment);
+            transaction.commit();
+            return true;
+        });
     }
-
 }
