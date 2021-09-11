@@ -6,14 +6,4 @@ import androidx.lifecycle.ViewModel;
 
 public class PesananViewModel extends ViewModel {
 
-    private MutableLiveData<String> mText;
-
-    public PesananViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is home fragment");
-    }
-
-    public LiveData<String> getText() {
-        return mText;
-    }
 }

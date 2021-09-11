@@ -26,7 +26,6 @@ public class HomepageActivity extends AppCompatActivity {
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-        // untuk mengganti halaman contoh: halaman produk -> halaman keranjang -> halaman pemesanan/pembayaran
         navView.setOnNavigationItemSelectedListener(item -> {
             Fragment selectedFragment = new BerandaFragment();
             switch (item.getItemId()) {
@@ -38,16 +37,16 @@ public class HomepageActivity extends AppCompatActivity {
                     break;
                 }
                 case R.id.navigation_pesanan: {
-                    navView.getMenu().findItem(R.id.navigation_beranda).setEnabled(false);
-                    navView.getMenu().findItem(R.id.navigation_pesanan).setEnabled(true);
+                    navView.getMenu().findItem(R.id.navigation_beranda).setEnabled(true);
+                    navView.getMenu().findItem(R.id.navigation_pesanan).setEnabled(false);
                     navView.getMenu().findItem(R.id.navigation_profile).setEnabled(true);
                     selectedFragment = new PesananFragment();
                     break;
                 }
                 case R.id.navigation_profile: {
-                    navView.getMenu().findItem(R.id.navigation_beranda).setEnabled(false);
+                    navView.getMenu().findItem(R.id.navigation_beranda).setEnabled(true);
                     navView.getMenu().findItem(R.id.navigation_pesanan).setEnabled(true);
-                    navView.getMenu().findItem(R.id.navigation_profile).setEnabled(true);
+                    navView.getMenu().findItem(R.id.navigation_profile).setEnabled(false);
                     selectedFragment = new ProfileFragment();
                     break;
                 }

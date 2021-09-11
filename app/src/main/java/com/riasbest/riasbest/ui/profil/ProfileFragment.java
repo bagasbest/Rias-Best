@@ -86,7 +86,6 @@ public class ProfileFragment extends Fragment {
 
                     Glide.with(this)
                             .load(userDp)
-                            .error(R.drawable.ic_baseline_account_circle_24)
                             .into(binding.dp);
 
                     if(!userDp.isEmpty()) {

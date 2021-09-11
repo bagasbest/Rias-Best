@@ -42,7 +42,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-        // filter belum bayar atau sudah bayar
+        // pilih level user: Perias atau Pelanggan
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.level_user, android.R.layout.simple_list_item_1);
         // Specify the layout to use when the list of choices appears
