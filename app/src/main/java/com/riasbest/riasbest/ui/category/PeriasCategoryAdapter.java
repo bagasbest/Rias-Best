@@ -1,5 +1,6 @@
 package com.riasbest.riasbest.ui.category;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,10 +24,11 @@ import java.util.ArrayList;
 public class PeriasCategoryAdapter extends RecyclerView.Adapter<PeriasCategoryAdapter.ViewHolder> {
 
     private final ArrayList<PeriasCategoryModel> listPerias = new ArrayList<>();
-
+    private final ArrayList<String> categoryList;
     final String role;
-    public PeriasCategoryAdapter(String role) {
+    public PeriasCategoryAdapter(String role, ArrayList<String> categoryList) {
         this.role = role;
+        this.categoryList = categoryList;
     }
 
     public void setData(ArrayList<PeriasCategoryModel> items) {
@@ -50,7 +52,7 @@ public class PeriasCategoryAdapter extends RecyclerView.Adapter<PeriasCategoryAd
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
-        holder.bind(listPerias.get(position), role);
+        holder.bind(listPerias.get(position), role, categoryList);
     }
 
     @Override
@@ -76,7 +78,8 @@ public class PeriasCategoryAdapter extends RecyclerView.Adapter<PeriasCategoryAd
             delete = itemView.findViewById(R.id.view2);
         }
 
-        public void bind(PeriasCategoryModel model, String role) {
+        @SuppressLint("SetTextI18n")
+        public void bind(PeriasCategoryModel model, String role, ArrayList<String> categoryList) {
 
             Glide.with(itemView.getContext())
                     .load(model.getDp())
@@ -86,8 +89,9 @@ public class PeriasCategoryAdapter extends RecyclerView.Adapter<PeriasCategoryAd
 
 
             if(role.equals("Pelanggan")) {
+                categoryList.add(model.getCategory());
                 NumberFormat formatter = new DecimalFormat("#,###");
-                price.setText(formatter.format(Double.parseDouble(model.getPrice())));
+                price.setText("Rp. " + formatter.format(Double.parseDouble(model.getPrice())));
             } else {
                 edit.setOnClickListener(new View.OnClickListener() {
                     @Override

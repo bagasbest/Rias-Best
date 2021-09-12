@@ -2,7 +2,6 @@ package com.riasbest.riasbest.ui.beranda;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -122,7 +121,7 @@ public class BerandaFragment extends Fragment {
 
     private void initRecylerViewPerias() {
         binding.rvPeriasRole.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
-        categoryAdapter = new PeriasCategoryAdapter("Perias");
+        categoryAdapter = new PeriasCategoryAdapter("Perias", null);
         binding.rvPeriasRole.setAdapter(categoryAdapter);
     }
 
