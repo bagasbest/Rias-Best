@@ -21,6 +21,7 @@
     <string-array name="status">
         <item>Belum Bayar</item>
         <item>Sudah Bayar</item>
+        <item>Selesai</item>
     </string-array>
 
 </resources>

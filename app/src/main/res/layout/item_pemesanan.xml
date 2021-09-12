@@ -7,7 +7,7 @@
     android:layout_marginStart="16dp"
     android:layout_marginTop="16dp"
     android:id="@+id/cv"
-    android:padding="8dp"
+    android:padding="10dp"
     android:backgroundTint="@color/bg_search"
     android:background="@drawable/bg_rounded"
     android:layout_marginEnd="16dp">
@@ -22,7 +22,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:riv_border_color="@color/white"
-        app:riv_border_width="2dp"
+        app:riv_border_width="3dp"
         app:riv_corner_radius="15dp" />
 
     <TextView

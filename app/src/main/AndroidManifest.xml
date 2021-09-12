@@ -9,7 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.RiasBest">
-        <activity android:name=".ui.pesanan.PemesananActivity"></activity>
+        <activity android:name=".ui.pesanan.PesananActivity"></activity>
+        <activity android:name=".ui.pesanan.PemesananDetailCompleteActivity" />
+        <activity android:name=".ui.pesanan.PemesananDetailActivity" />
+        <activity android:name=".ui.pesanan.PemesananActivity" />
         <activity android:name=".ui.category.PeriasEditCategoryActivity" />
         <activity android:name=".ui.category.PeriasCategoryActivity" />
         <activity android:name=".ui.category.PeriasAddCategoryActivity" />

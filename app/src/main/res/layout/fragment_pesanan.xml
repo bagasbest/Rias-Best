@@ -23,7 +23,7 @@
         android:id="@+id/customerRole"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:visibility="gone"
+        android:layout_marginTop="10dp"
         android:layout_marginBottom="57dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView12">

@@ -19,13 +19,14 @@ public class PesananFragment extends Fragment {
 
     private FragmentPesananBinding binding;
     private PemesananAdapter adapter;
-    private String status;
+    private String status = "all";
     private FirebaseUser user;
+    private String role;
 
     @Override
     public void onResume() {
         super.onResume();
-
+        checkRole();
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -33,7 +34,6 @@ public class PesananFragment extends Fragment {
 
         binding = FragmentPesananBinding.inflate(inflater, container, false);
         user = FirebaseAuth.getInstance().getCurrentUser();
-        checkRole();
 
         // pilih kategori
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
@@ -44,8 +44,8 @@ public class PesananFragment extends Fragment {
         binding.paymentStatus.setAdapter(adapter);
         binding.paymentStatus.setOnItemClickListener((adapterView, view, i, l) -> {
             status = binding.paymentStatus.getText().toString();
-            initRecylerViewCustomer();
-            initViewModelCustomer();
+            initRecyclerView();
+            initViewModel();
         });
 
 
@@ -59,22 +59,19 @@ public class PesananFragment extends Fragment {
                 .document(user.getUid())
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
-                    if(("" + documentSnapshot.get("role")).equals("Pelanggan")) {
-                        binding.customerRole.setVisibility(View.VISIBLE);
-                        status = "all";
-                        initRecylerViewCustomer();
-                        initViewModelCustomer();
-                    }
+                    role = ""+documentSnapshot.get("role");
+                    initRecyclerView();
+                    initViewModel();
                 });
     }
 
-    private void initRecylerViewCustomer() {
+    private void initRecyclerView() {
         binding.rvPemesananCustomer.setLayoutManager(new LinearLayoutManager(requireContext()));
-        adapter = new PemesananAdapter();
+        adapter = new PemesananAdapter(role);
         binding.rvPemesananCustomer.setAdapter(adapter);
     }
 
-    private void initViewModelCustomer() {
+    private void initViewModel() {
         // tampilkan daftar artikel di halaman artikel terkait pertanian
         PemesananViewModel viewModel = new ViewModelProvider(this).get(PemesananViewModel.class);
 

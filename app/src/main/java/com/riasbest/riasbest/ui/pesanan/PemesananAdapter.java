@@ -1,6 +1,7 @@
 package com.riasbest.riasbest.ui.pesanan;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,13 @@ import java.util.ArrayList;
 public class PemesananAdapter extends RecyclerView.Adapter<PemesananAdapter.ViewHolder> {
 
     private final ArrayList<PemesananModel> listPemesanan = new ArrayList<>();
+
+    private String role;
+
+    public PemesananAdapter(String role) {
+        this.role = role;
+    }
+
     public void setData(ArrayList<PemesananModel> items) {
         listPemesanan.clear();
         listPemesanan.addAll(items);
@@ -38,7 +46,7 @@ public class PemesananAdapter extends RecyclerView.Adapter<PemesananAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
-        holder.bind(listPemesanan.get(position));
+        holder.bind(listPemesanan.get(position), role);
     }
 
     @Override
@@ -67,7 +75,7 @@ public class PemesananAdapter extends RecyclerView.Adapter<PemesananAdapter.View
         }
 
         @SuppressLint("SetTextI18n")
-        public void bind(PemesananModel model) {
+        public void bind(PemesananModel model, String role) {
             Glide.with(itemView.getContext())
                     .load(model.getDp())
                     .into(dp);
@@ -77,10 +85,37 @@ public class PemesananAdapter extends RecyclerView.Adapter<PemesananAdapter.View
             dateTime.setText("Pemesanan: " + model.getDateTime());
             status.setText(model.getStatus());
 
-            if(model.getStatus().equals("Belum Bayar")) {
-                view.setBackgroundTintList(ContextCompat.getColorStateList(itemView.getContext(), android.R.color.holo_red_dark));
+            if (role.equals("Pelanggan")) {
+
+                if (model.getStatus().equals("Belum Bayar")) {
+                    view.setBackgroundTintList(ContextCompat.getColorStateList(itemView.getContext(), android.R.color.holo_red_dark));
+                    cv.setOnClickListener(view -> {
+                        Intent intent = new Intent(itemView.getContext(), PemesananDetailActivity.class);
+                        intent.putExtra(PemesananDetailActivity.EXTRA_ORDER, model);
+                        itemView.getContext().startActivity(intent);
+                    });
+                } else {
+                    view.setBackgroundTintList(ContextCompat.getColorStateList(itemView.getContext(), android.R.color.holo_green_dark));
+                    cv.setOnClickListener(view -> {
+                        Intent intent = new Intent(itemView.getContext(), PemesananDetailCompleteActivity.class);
+                        intent.putExtra(PemesananDetailCompleteActivity.EXTRA_ORDER, model);
+                        itemView.getContext().startActivity(intent);
+                    });
+                }
+
             } else {
-                view.setBackgroundTintList(ContextCompat.getColorStateList(itemView.getContext(), android.R.color.holo_green_dark));
+
+                if (model.getStatus().equals("Belum Bayar")) {
+                    view.setBackgroundTintList(ContextCompat.getColorStateList(itemView.getContext(), android.R.color.holo_red_dark));
+                } else {
+                    view.setBackgroundTintList(ContextCompat.getColorStateList(itemView.getContext(), android.R.color.holo_green_dark));
+                }
+
+                cv.setOnClickListener(view -> {
+                    Intent intent = new Intent(itemView.getContext(), PesananActivity.class);
+                    intent.putExtra(PesananActivity.EXTRA_ORDER, model);
+                    itemView.getContext().startActivity(intent);
+                });
             }
         }
     }
