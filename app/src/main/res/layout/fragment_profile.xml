@@ -66,11 +66,24 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="Email"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="25dp"
         android:textColor="@color/white"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/view3"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="No Rekening"
+        android:visibility="gone"
+        android:layout_marginTop="25dp"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/view3"
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
     <TextView
         android:id="@+id/textView5"
@@ -82,7 +95,7 @@
         android:textColor="@color/white"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/view3"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
     <EditText
         android:layout_width="0dp"
@@ -96,7 +109,7 @@
         android:background="@color/white"
         app:layout_constraintEnd_toEndOf="@+id/view3"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintWidth_percent="0.6"
+        app:layout_constraintWidth_percent="0.55"
         android:autofillHints="no"
         tools:ignore="LabelFor" />
 
@@ -113,7 +126,7 @@
         android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="@+id/view3"
         app:layout_constraintTop_toBottomOf="@+id/nameEt"
-        app:layout_constraintWidth_percent="0.6"
+        app:layout_constraintWidth_percent="0.55"
         tools:ignore="LabelFor" />
 
     <EditText
@@ -129,7 +142,24 @@
         android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="@+id/view3"
         app:layout_constraintTop_toBottomOf="@+id/addressEt"
-        app:layout_constraintWidth_percent="0.6"
+        app:layout_constraintWidth_percent="0.55"
+        tools:ignore="LabelFor" />
+
+    <EditText
+        android:id="@+id/rekeningEt"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="16dp"
+        android:autofillHints="no"
+        android:layout_marginTop="10dp"
+        android:visibility="gone"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:background="@color/white"
+        android:inputType="textEmailAddress"
+        app:layout_constraintEnd_toEndOf="@+id/view3"
+        app:layout_constraintTop_toBottomOf="@+id/emailEt"
+        app:layout_constraintWidth_percent="0.55"
         tools:ignore="LabelFor" />
 
     <com.makeramen.roundedimageview.RoundedImageView
@@ -145,7 +175,7 @@
         android:layout_marginTop="16dp"
         android:contentDescription="@string/image"
         app:layout_constraintEnd_toEndOf="@+id/view3"
-        app:layout_constraintTop_toBottomOf="@+id/emailEt" />
+        app:layout_constraintTop_toBottomOf="@+id/rekeningEt" />
 
     <ImageView
         android:layout_width="80dp"

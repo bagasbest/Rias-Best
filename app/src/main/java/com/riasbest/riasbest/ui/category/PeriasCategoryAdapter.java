@@ -1,5 +1,6 @@
 package com.riasbest.riasbest.ui.category;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,6 +63,7 @@ public class PeriasCategoryAdapter extends RecyclerView.Adapter<PeriasCategoryAd
         ConstraintLayout cv;
         ImageView dp;
         TextView category, price;
+        View edit, delete;
 
 
         public ViewHolder(@NonNull @NotNull View itemView) {
@@ -70,6 +72,8 @@ public class PeriasCategoryAdapter extends RecyclerView.Adapter<PeriasCategoryAd
             dp = itemView.findViewById(R.id.roundedImageView);
             category = itemView.findViewById(R.id.category);
             price = itemView.findViewById(R.id.price);
+            edit = itemView.findViewById(R.id.editView);
+            delete = itemView.findViewById(R.id.view2);
         }
 
         public void bind(PeriasCategoryModel model, String role) {
@@ -85,7 +89,21 @@ public class PeriasCategoryAdapter extends RecyclerView.Adapter<PeriasCategoryAd
                 NumberFormat formatter = new DecimalFormat("#,###");
                 price.setText(formatter.format(Double.parseDouble(model.getPrice())));
             } else {
+                edit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(itemView.getContext(), PeriasEditCategoryActivity.class);
+                        intent.putExtra(PeriasEditCategoryActivity.EXTRA_EDIT, model);
+                        itemView.getContext().startActivity(intent);
+                    }
+                });
 
+                delete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
             }
 
 

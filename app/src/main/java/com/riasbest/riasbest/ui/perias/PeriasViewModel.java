@@ -39,7 +39,12 @@ public class PeriasViewModel extends ViewModel {
                                 perias.setRole("" + document.get("role"));
                                 perias.setUsername("" + document.get("username"));
                                 perias.setUid("" + document.get("uid"));
-
+                                String noRek = "" + document.get("rekening");
+                                if(noRek.equals("null")) {
+                                    perias.setRekening("");
+                                } else {
+                                    perias.setRekening(noRek);
+                                }
                                 periasCategoryModelArrayList.add(perias);
                             }
                             listPerias.postValue(periasCategoryModelArrayList);

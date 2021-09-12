@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -22,17 +23,18 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.riasbest.riasbest.R;
-import com.riasbest.riasbest.databinding.ActivityPeriasAddCategoryBinding;
+import com.riasbest.riasbest.databinding.ActivityPeriasEditCategoryBinding;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class PeriasAddCategoryActivity extends AppCompatActivity {
+public class PeriasEditCategoryActivity extends AppCompatActivity {
 
-    public static final String EXTRA_NAME = "name";
-    private ActivityPeriasAddCategoryBinding binding;
+    public static final String EXTRA_EDIT = "edit";
+    private ActivityPeriasEditCategoryBinding binding;
+    private PeriasCategoryModel model;
     private String category;
     private String image;
     private static final int REQUEST_FROM_GALLERY_TO_SELF_PHOTO = 1001;
@@ -40,21 +42,44 @@ public class PeriasAddCategoryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityPeriasAddCategoryBinding.inflate(getLayoutInflater());
+        binding = ActivityPeriasEditCategoryBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        model = getIntent().getParcelableExtra(EXTRA_EDIT);
+        binding.name.setText(model.getName());
+        binding.categoryMakeup.setText(model.getCategory());
+        binding.price.setText(model.getPrice());
 
-        // set nama perias
-        binding.name.setText(getIntent().getStringExtra(EXTRA_NAME));
+        Glide.with(this)
+                .load(model.getDp())
+                .into(binding.roundedImageView2);
 
-        // kembali ke halaman sebelumnya
-        binding.backButton.setOnClickListener(view -> onBackPressed());
+        binding.backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
 
-        // submit data
-        binding.view2.setOnClickListener(view -> addCategory());
+        // edit
+        binding.view4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                validateForm();
+            }
+        });
 
-        // ambil gambar dari galeri
-        binding.view6.setOnClickListener(view -> pickImage());
+        // choose image
+        binding.view2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ImagePicker
+                        .with(PeriasEditCategoryActivity.this)
+                        .galleryOnly()
+                        .compress(1024)
+                        .start(REQUEST_FROM_GALLERY_TO_SELF_PHOTO);
+            }
+        });
 
         // pilih kategori
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -69,59 +94,45 @@ public class PeriasAddCategoryActivity extends AppCompatActivity {
 
     }
 
-    private void pickImage() {
-        ImagePicker
-                .with(this)
-                .galleryOnly()
-                .compress(1024)
-                .start(REQUEST_FROM_GALLERY_TO_SELF_PHOTO);
-    }
-
-    private void addCategory() {
+    private void validateForm() {
         String name = binding.name.getText().toString().trim();
         String price = binding.price.getText().toString().trim();
 
         if(name.isEmpty()) {
-            Toast.makeText(PeriasAddCategoryActivity.this, "Nama Perias tidak boleh kosong!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(PeriasEditCategoryActivity.this, "Nama tidak boleh kosong!", Toast.LENGTH_SHORT).show();
             return;
-        } else if (price.isEmpty()) {
-            Toast.makeText(PeriasAddCategoryActivity.this, "Harga tidak boleh kosong!", Toast.LENGTH_SHORT).show();
-            return;
-        } else if (category == null) {
-            Toast.makeText(PeriasAddCategoryActivity.this, "Kategori tidak boleh kosong!", Toast.LENGTH_SHORT).show();
-            return;
-        } else if (image == null) {
-            Toast.makeText(PeriasAddCategoryActivity.this, "Gambar tidak boleh kosong!", Toast.LENGTH_SHORT).show();
+        } else if(price.isEmpty()) {
+            Toast.makeText(PeriasEditCategoryActivity.this, "Harga tidak boleh kosong!", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        binding.progressBar.setVisibility(View.VISIBLE);
+        binding.progressBar3.setVisibility(View.VISIBLE);
 
-        String periasId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        String uid = String.valueOf(System.currentTimeMillis());
 
         Map<String, Object> data = new HashMap<>();
         data.put("name", name);
         data.put("price", price);
-        data.put("category", category);
-        data.put("dp", image);
-        data.put("periasId", periasId);
-        data.put("uid", uid);
+        if(category != null) {
+            data.put("category", category);
+        }
+        if(image != null) {
+            data.put("dp", image);
+        }
 
 
         FirebaseFirestore
                 .getInstance()
                 .collection("perias")
-                .document(uid)
-                .set(data)
+                .document(model.getUid())
+                .update(data)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull @NotNull Task<Void> task) {
                         if(task.isSuccessful()) {
-                            binding.progressBar.setVisibility(View.GONE);
+                            binding.progressBar3.setVisibility(View.GONE);
                             showSuccessDialog();
                         } else {
-                            binding.progressBar.setVisibility(View.GONE);
+                            binding.progressBar3.setVisibility(View.GONE);
                             showFailureDialog();
                         }
                     }
@@ -131,8 +142,8 @@ public class PeriasAddCategoryActivity extends AppCompatActivity {
 
     private void showFailureDialog() {
         new AlertDialog.Builder(this)
-                .setTitle("Gagal Menambah Kategori")
-                .setMessage("Mohon maaf, anda gagal menambah kategori baru, silahkan periksa koneksi internet anda, dan coba lagi nanti")
+                .setTitle("Gagal Mengedit Kategori")
+                .setMessage("Mohon maaf, anda gagal mengedit kategori baru, silahkan periksa koneksi internet anda, dan coba lagi nanti")
                 .setIcon(R.drawable.ic_baseline_clear_24)
                 .setPositiveButton("OKE", (dialogInterface, i) -> {
                     dialogInterface.dismiss();
@@ -142,8 +153,8 @@ public class PeriasAddCategoryActivity extends AppCompatActivity {
 
     private void showSuccessDialog() {
         new AlertDialog.Builder(this)
-                .setTitle("Berhasil Menambah Kategori")
-                .setMessage("Selamat, anda berhasil menambah kategori perias baru pada jasa anda")
+                .setTitle("Berhasil Mengedit Kategori")
+                .setMessage("Selamat, anda berhasil mengedit kategori perias baru pada jasa anda")
                 .setIcon(R.drawable.ic_baseline_check_circle_outline_24)
                 .setPositiveButton("OKE", (dialogInterface, i) -> {
                     dialogInterface.dismiss();
@@ -151,6 +162,7 @@ public class PeriasAddCategoryActivity extends AppCompatActivity {
                 })
                 .show();
     }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -177,19 +189,22 @@ public class PeriasAddCategoryActivity extends AppCompatActivity {
                                 .addOnSuccessListener(uri -> {
                                     image = uri.toString();
                                     mProgressDialog.dismiss();
-                                    binding.textView10.setText("Berhasil Ditambahkan");
+                                    Glide.with(PeriasEditCategoryActivity.this)
+                                            .load(image)
+                                            .into(binding.roundedImageView2);
                                 })
                                 .addOnFailureListener(e -> {
                                     mProgressDialog.dismiss();
-                                    Toast.makeText(PeriasAddCategoryActivity.this, "Gagal mengupload gambar", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(PeriasEditCategoryActivity.this, "Gagal mengupload gambar", Toast.LENGTH_SHORT).show();
                                     Log.d("userDp: ", e.toString());
                                 }))
                 .addOnFailureListener(e -> {
                     mProgressDialog.dismiss();
-                    Toast.makeText(PeriasAddCategoryActivity.this, "Gagal mengupload gambar", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PeriasEditCategoryActivity.this, "Gagal mengupload gambar", Toast.LENGTH_SHORT).show();
                     Log.d("userDp: ", e.toString());
                 });
     }
+
 
     @Override
     protected void onDestroy() {

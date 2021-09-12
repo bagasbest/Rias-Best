@@ -17,8 +17,10 @@ import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.github.dhaval2404.imagepicker.ImagePicker;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.riasbest.riasbest.LoginActivity;
 import com.riasbest.riasbest.R;
@@ -45,10 +47,30 @@ public class ProfileFragment extends Fragment {
 
         user = FirebaseAuth.getInstance().getCurrentUser();
 
+        // check role
+        checkRole();
+
         // AMBIL SEMUA DATA DARI DATABASE DAN TAMPILKAN
         populateUI();
 
         return binding.getRoot();
+    }
+
+    private void checkRole() {
+        FirebaseFirestore
+                .getInstance()
+                .collection("users")
+                .document(user.getUid())
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if(("" + documentSnapshot.get("role")).equals("Perias")) {
+                            binding.textView6.setVisibility(View.VISIBLE);
+                            binding.rekeningEt.setVisibility(View.VISIBLE);
+                        }
+                    }
+                });
     }
 
     @Override
@@ -78,6 +100,11 @@ public class ProfileFragment extends Fragment {
                     String email = "" + documentSnapshot.get("email");
                     String address = "" + documentSnapshot.get("address");
                     String userDp = "" + documentSnapshot.get("dp");
+                    String rekening = "" + documentSnapshot.get("rekening");
+
+                    if(!rekening.equals("null")) {
+                        binding.rekeningEt.setText(rekening);
+                    }
 
                     //TERAPKAN PADA UI PROFIL
                     binding.nameEt.setText(name);
@@ -125,6 +152,7 @@ public class ProfileFragment extends Fragment {
     private void saveProfileChangesToDatabase() {
         String name = binding.nameEt.getText().toString().trim();
         String address = binding.addressEt.getText().toString().trim();
+        String rekening = binding.rekeningEt.getText().toString().trim();
 
         // VALIDASI KOLOM PROFIL, JANGAN SAMPAI ADA YANG KOSONG
         if (name.isEmpty()) {
@@ -144,6 +172,9 @@ public class ProfileFragment extends Fragment {
         Map<String, Object> updateProfile = new HashMap<>();
         updateProfile.put("name", name);
         updateProfile.put("address", address);
+        if(!rekening.isEmpty()) {
+            updateProfile.put("rekening", rekening);
+        }
 
         // SIMPAN PERUBAHAN PROFIL TERBARU KE DATABASE
         FirebaseFirestore

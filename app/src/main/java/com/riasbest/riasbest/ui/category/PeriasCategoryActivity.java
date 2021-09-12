@@ -34,6 +34,7 @@ public class PeriasCategoryActivity extends AppCompatActivity {
         binding.name.setText(model.getName());
         binding.nameEt.setText(model.getName());
         binding.addressEt.setText(model.getAddress());
+        binding.rekening.setText(model.getRekening());
 
         initRecylerViewPerias();
         initViewModelPerias();

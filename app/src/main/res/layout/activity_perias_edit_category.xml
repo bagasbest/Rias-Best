@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.category.PeriasAddCategoryActivity">
+    tools:context=".ui.category.PeriasEditCategoryActivity">
 
 
     <ImageButton
@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="27dp"
-        android:text="Tambah Kategori Makeup"
+        android:text="Edit Kategori Makeup"
         android:textColor="@color/black"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -95,6 +95,7 @@
         app:layout_constraintTop_toBottomOf="@+id/name" />
 
     <ImageView
+        android:id="@+id/imageView2"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginEnd="16dp"
@@ -122,78 +123,72 @@
         app:layout_constraintStart_toStartOf="@+id/view5"
         app:layout_constraintTop_toBottomOf="@+id/categoryMakeup" />
 
-    <EditText
-        android:id="@+id/imageBg"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
-        android:autofillHints="no"
-        android:background="@drawable/bg_edit_text"
-        android:hint="Gambar"
-        android:layout_marginTop="16dp"
-        android:enabled="false"
-        android:inputType="number"
-        android:paddingStart="16dp"
-        android:textColor="@color/white"
-        android:textColorHint="@color/white"
-        app:layout_constraintEnd_toEndOf="@+id/view5"
-        app:layout_constraintStart_toStartOf="@+id/view5"
-        app:layout_constraintTop_toBottomOf="@+id/price" />
 
-    <View
-        android:id="@+id/view6"
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/roundedImageView2"
         android:layout_width="150dp"
-        android:layout_height="47dp"
-        android:layout_marginEnd="2dp"
-        android:background="@drawable/bg_edit_text"
-        android:backgroundTint="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/imageBg"
-        app:layout_constraintEnd_toEndOf="@+id/imageBg"
-        app:layout_constraintTop_toTopOf="@+id/imageBg" />
-
-
-    <TextView
-        android:id="@+id/textView10"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Choose Image"
-        android:textColor="@color/black"
-        app:layout_constraintBottom_toBottomOf="@+id/view6"
-        app:layout_constraintEnd_toEndOf="@+id/view6"
-        app:layout_constraintStart_toStartOf="@+id/view6"
-        app:layout_constraintTop_toTopOf="@+id/view6" />
+        android:layout_height="100dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="16dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintStart_toStartOf="@+id/view5"
+        app:layout_constraintTop_toBottomOf="@+id/price"
+        app:riv_border_color="@color/primary"
+        app:riv_border_width="3dp"
+        app:riv_corner_radius="10dp" />
 
     <ProgressBar
+        android:id="@+id/progressBar3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="@+id/view5"
-        app:layout_constraintStart_toStartOf="@+id/view5"
-        android:layout_marginTop="16dp"
-        android:id="@+id/progressBar"
         android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@+id/imageBg" />
-
+        android:layout_marginTop="5dp"
+        app:layout_constraintEnd_toEndOf="@+id/view5"
+        app:layout_constraintHorizontal_bias="0.61"
+        app:layout_constraintStart_toStartOf="@+id/view5"
+        app:layout_constraintTop_toBottomOf="@+id/roundedImageView2" />
 
     <View
         android:id="@+id/view2"
-        android:layout_width="120dp"
+        android:layout_width="150dp"
         android:layout_height="40dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/bg_button"
-        app:layout_constraintEnd_toEndOf="@+id/view5"
         app:layout_constraintStart_toStartOf="@+id/view5"
-        app:layout_constraintTop_toBottomOf="@+id/progressBar" />
+        app:layout_constraintTop_toBottomOf="@+id/roundedImageView2" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tambah"
+        android:text="Choose image"
         android:textColor="@color/black"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/view2"
         app:layout_constraintEnd_toEndOf="@+id/view2"
         app:layout_constraintStart_toStartOf="@+id/view2"
         app:layout_constraintTop_toTopOf="@+id/view2" />
+
+
+    <View
+        android:id="@+id/view4"
+        android:layout_width="120dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_button"
+        app:layout_constraintEnd_toEndOf="@+id/view5"
+        app:layout_constraintStart_toStartOf="@+id/view5"
+        app:layout_constraintTop_toBottomOf="@+id/view2" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Edit"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/view4"
+        app:layout_constraintEnd_toEndOf="@+id/view4"
+        app:layout_constraintStart_toStartOf="@+id/view4"
+        app:layout_constraintTop_toTopOf="@+id/view4" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

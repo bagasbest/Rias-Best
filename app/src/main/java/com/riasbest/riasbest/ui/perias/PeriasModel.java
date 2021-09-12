@@ -12,6 +12,7 @@ public class PeriasModel implements Parcelable {
     private String role;
     private String address;
     private String dp;
+    private String rekening;
 
     public PeriasModel() {}
 
@@ -23,6 +24,24 @@ public class PeriasModel implements Parcelable {
         role = in.readString();
         address = in.readString();
         dp = in.readString();
+        rekening = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeString(uid);
+        dest.writeString(username);
+        dest.writeString(email);
+        dest.writeString(role);
+        dest.writeString(address);
+        dest.writeString(dp);
+        dest.writeString(rekening);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<PeriasModel> CREATOR = new Creator<PeriasModel>() {
@@ -93,19 +112,11 @@ public class PeriasModel implements Parcelable {
         this.dp = dp;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public String getRekening() {
+        return rekening;
     }
 
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(name);
-        parcel.writeString(uid);
-        parcel.writeString(username);
-        parcel.writeString(email);
-        parcel.writeString(role);
-        parcel.writeString(address);
-        parcel.writeString(dp);
+    public void setRekening(String rekening) {
+        this.rekening = rekening;
     }
 }

@@ -109,7 +109,6 @@ public class BerandaFragment extends Fragment {
         binding.progressBar.setVisibility(View.VISIBLE);
         viewModel.setPeriasList();
         viewModel.getPeriasList().observe(this, periasModels -> {
-            Log.e("TAG", String.valueOf(periasModels.size()));
             if (periasModels.size() > 0) {
                 binding.progressBar.setVisibility(View.GONE);
                 binding.noData.setVisibility(View.GONE);
