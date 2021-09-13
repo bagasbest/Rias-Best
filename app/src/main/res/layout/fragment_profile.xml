@@ -44,7 +44,6 @@
         android:layout_marginTop="30dp"
         android:text="Nama"
         android:textColor="@color/white"
-        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/view3"
         app:layout_constraintTop_toTopOf="@+id/view3" />
 
@@ -54,9 +53,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="Alamat"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:textColor="@color/white"
-        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/view3"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
@@ -66,9 +64,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="Email"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="30dp"
         android:textColor="@color/white"
-        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/view3"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
@@ -79,9 +76,8 @@
         android:layout_marginStart="16dp"
         android:text="No Rekening"
         android:visibility="gone"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="30dp"
         android:textColor="@color/white"
-        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/view3"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
@@ -93,7 +89,6 @@
         android:layout_marginTop="40dp"
         android:text="Gambar"
         android:textColor="@color/white"
-        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/view3"
         app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
@@ -165,7 +160,7 @@
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/dp"
         android:layout_width="0dp"
-        app:layout_constraintWidth_percent="0.5"
+        app:layout_constraintWidth_percent="0.55"
         android:layout_height="100dp"
         android:layout_marginEnd="16dp"
         android:scaleType="centerCrop"
@@ -198,7 +193,6 @@
         android:layout_marginStart="16dp"
         android:textAllCaps="false"
         android:textColor="@color/black"
-        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@+id/view3"
         app:layout_constraintStart_toStartOf="@+id/view3" />
 
@@ -212,7 +206,6 @@
         android:text="Edit"
         android:textAllCaps="false"
         android:textColor="@color/black"
-        android:textSize="18sp"
         android:layout_marginStart="20dp"
         app:layout_constraintBottom_toBottomOf="@+id/view3"
         app:layout_constraintStart_toEndOf="@+id/logoutBtn" />

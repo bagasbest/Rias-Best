@@ -77,9 +77,17 @@ public class PesananFragment extends Fragment {
 
         binding.progressBar.setVisibility(View.VISIBLE);
         if(status.equals("all")){
-            viewModel.setListOrderAll(user.getUid());
+            if(role.equals("Pelanggan")) {
+                viewModel.setListOrderAll(user.getUid(), "customerId");
+            } else {
+                viewModel.setListOrderAll(user.getUid(), "periasId");
+            }
         } else {
-            viewModel.setListOrderByStatus(user.getUid(), status);
+            if(role.equals("Pelanggan")) {
+                viewModel.setListOrderByStatus(user.getUid(), status, "customerId");
+            } else {
+                viewModel.setListOrderByStatus(user.getUid(), status, "periasId");
+            }
         }
         viewModel.getOrder().observe(getViewLifecycleOwner(), order -> {
             if (order.size() > 0) {

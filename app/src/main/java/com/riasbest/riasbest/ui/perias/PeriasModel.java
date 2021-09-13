@@ -6,6 +6,7 @@ import android.os.Parcelable;
 public class PeriasModel implements Parcelable {
 
     private String name;
+    private String nameTemp;
     private String uid;
     private String username;
     private String email;
@@ -18,6 +19,7 @@ public class PeriasModel implements Parcelable {
 
     protected PeriasModel(Parcel in) {
         name = in.readString();
+        nameTemp = in.readString();
         uid = in.readString();
         username = in.readString();
         email = in.readString();
@@ -30,6 +32,7 @@ public class PeriasModel implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(name);
+        dest.writeString(nameTemp);
         dest.writeString(uid);
         dest.writeString(username);
         dest.writeString(email);
@@ -62,6 +65,14 @@ public class PeriasModel implements Parcelable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getNameTemp() {
+        return nameTemp;
+    }
+
+    public void setNameTemp(String nameTemp) {
+        this.nameTemp = nameTemp;
     }
 
     public String getUid() {

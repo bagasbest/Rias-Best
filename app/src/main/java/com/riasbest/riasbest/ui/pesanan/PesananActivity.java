@@ -4,8 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -24,7 +29,6 @@ public class PesananActivity extends AppCompatActivity {
     public static final String EXTRA_ORDER = "order";
     private ActivityPesananBinding binding;
     private PemesananModel model;
-    private String address;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,17 +47,14 @@ public class PesananActivity extends AppCompatActivity {
         binding.price.setText("Rp. " + formatter.format(Double.parseDouble(model.getPrice())));
         binding.nameEt.setText(model.getPeriasName());
         binding.category.setText(model.getCategory());
-        binding.addressEt.setText(address);
 
 
         // cek apakah sudah bayar atau belum
-        if(model.getStatus().equals("Sudah Bayar") || model.getStatus().equals("Selesai")) {
+        if(model.getStatus().equals("Sudah Bayar")) {
             binding.textView15.setText("Daftar Pesanan\nyang Sudah Dibayar");
             binding.textView6.setVisibility(View.VISIBLE);
             binding.paymentProof.setVisibility(View.VISIBLE);
-            if(model.getStatus().equals("Selesai")) {
-                binding.finishBtn.setVisibility(View.VISIBLE);
-            }
+            binding.finishBtn.setVisibility(View.VISIBLE);
             Glide.with(this)
                     .load(model.getPaymentProof())
                     .into(binding.paymentProof);
@@ -70,6 +71,37 @@ public class PesananActivity extends AppCompatActivity {
             public void onClick(View view) {
                 showAlertFinish();
             }
+        });
+
+        // highlight bukti pembayaran
+        binding.paymentProof.setOnClickListener(view -> {
+            Dialog dialog;
+            Button btnDismiss;
+            ImageView dp;
+
+            dialog = new Dialog(PesananActivity.this);
+
+            dialog.setContentView(R.layout.popup_payment_proof);
+            dialog.setCanceledOnTouchOutside(false);
+
+            dp = dialog.findViewById(R.id.dp);
+
+            Glide.with(PesananActivity.this)
+                    .load(model.getPaymentProof())
+                    .into(dp);
+
+            btnDismiss = dialog.findViewById(R.id.dismissBtn);
+
+            btnDismiss.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.dismiss();
+                }
+            });
+
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.show();
+
         });
     }
 
@@ -134,7 +166,7 @@ public class PesananActivity extends AppCompatActivity {
                 .collection("users")
                 .document(model.getPeriasId())
                 .get()
-                .addOnSuccessListener(documentSnapshot -> address = ""+documentSnapshot.get("address"));
+                .addOnSuccessListener(documentSnapshot ->         binding.addressEt.setText(""+documentSnapshot.get("address")));
     }
 
     @Override

@@ -52,7 +52,8 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvPerias"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -67,9 +68,9 @@
             android:textColor="@color/black"
             android:textSize="28sp"
             android:textStyle="bold"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@+id/rvPerias"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/rvPerias"
             app:layout_constraintStart_toStartOf="@+id/rvPerias"
             app:layout_constraintTop_toTopOf="@+id/rvPerias" />
 

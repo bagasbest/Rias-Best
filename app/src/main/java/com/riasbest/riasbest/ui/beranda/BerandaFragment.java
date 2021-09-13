@@ -2,6 +2,8 @@ package com.riasbest.riasbest.ui.beranda;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,15 +42,19 @@ public class BerandaFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        // cek apakah pengguna yang login ini merupakan perias atau pelanggan
         checkRole();
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentBerandaBinding.inflate(inflater, container, false);
+
+        // cek user id
         user = FirebaseAuth.getInstance().getCurrentUser();
 
 
+        // tampilkan banner perias
         Glide.with(getActivity())
                 .load(R.drawable.banner)
                 .into(binding.roundedImageView);
@@ -60,12 +66,34 @@ public class BerandaFragment extends Fragment {
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        binding.view4.setOnClickListener(new View.OnClickListener() {
+        // tambah kategori perias
+        binding.view4.setOnClickListener(view1 -> {
+            Intent intent = new Intent (getActivity(), PeriasAddCategoryActivity.class);
+            intent.putExtra(PeriasAddCategoryActivity.EXTRA_NAME, name);
+            startActivity(intent);
+        });
+
+        // cari perias
+        binding.searchEt.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent (getActivity(), PeriasAddCategoryActivity.class);
-                intent.putExtra(PeriasAddCategoryActivity.EXTRA_NAME, name);
-                startActivity(intent);
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if(!editable.toString().isEmpty()) {
+                    initRecylerViewCustomer();
+                    initViewModelCustomer(editable.toString());
+                } else {
+                    initRecylerViewCustomer();
+                    initViewModelCustomer("all");
+                }
             }
         });
 
@@ -73,6 +101,7 @@ public class BerandaFragment extends Fragment {
 
     private void checkRole () {
 
+        // cek role apakah pelanggan / perias
         FirebaseFirestore
                 .getInstance()
                 .collection("users")
@@ -84,7 +113,7 @@ public class BerandaFragment extends Fragment {
                         if(("" + documentSnapshot.get("role")).equals("Pelanggan")) {
                             binding.customerRole.setVisibility(View.VISIBLE);
                             initRecylerViewCustomer();
-                            initViewModelCustomer();
+                            initViewModelCustomer("all");
                         } else {
                             binding.periasRole.setVisibility(View.VISIBLE);
                             initRecylerViewPerias();
@@ -96,17 +125,22 @@ public class BerandaFragment extends Fragment {
     }
 
     private void initRecylerViewCustomer() {
+        // tampilkan perias dalam bentuk list
         binding.rvPerias.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         customerAdapter = new PeriasAdapter();
         binding.rvPerias.setAdapter(customerAdapter);
     }
 
-    private void initViewModelCustomer() {
-        // tampilkan daftar artikel di halaman artikel terkait pertanian
+    private void initViewModelCustomer(String query) {
+        // tampilkan daftar perias wajah dari sisi kustomer
         PeriasViewModel viewModel = new ViewModelProvider(this).get(PeriasViewModel.class);
 
         binding.progressBar.setVisibility(View.VISIBLE);
-        viewModel.setPeriasList();
+        if(query.equals("all")) {
+            viewModel.setPeriasList();
+        } else {
+            viewModel.setPeriasListByQuery(query);
+        }
         viewModel.getPeriasList().observe(this, periasModels -> {
             if (periasModels.size() > 0) {
                 binding.progressBar.setVisibility(View.GONE);
@@ -120,13 +154,14 @@ public class BerandaFragment extends Fragment {
     }
 
     private void initRecylerViewPerias() {
+        // tampilkan jasa perias dalam bentuk list
         binding.rvPeriasRole.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         categoryAdapter = new PeriasCategoryAdapter("Perias", null);
         binding.rvPeriasRole.setAdapter(categoryAdapter);
     }
 
     private void initViewModelPerias() {
-        // tampilkan daftar artikel di halaman artikel terkait pertanian
+        // tampilkan daftar jasa perias dari sisi perias
         PeriasCategoryViewModel viewModel = new ViewModelProvider(this).get(PeriasCategoryViewModel.class);
 
         binding.progressBarPerias.setVisibility(View.VISIBLE);
@@ -143,6 +178,7 @@ public class BerandaFragment extends Fragment {
         });
     }
 
+    // destroy activity jika tidak digunakan
     @Override
     public void onDestroyView() {
         super.onDestroyView();

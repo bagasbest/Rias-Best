@@ -53,7 +53,6 @@ public class PemesananDetailActivity extends AppCompatActivity {
         getAddress();
 
         binding.nameEt.setText(model.getPeriasName());
-        binding.addressEt.setText(address);
         binding.category.setText(model.getCategory());
 
         NumberFormat formatter = new DecimalFormat("#,###");
@@ -79,6 +78,10 @@ public class PemesananDetailActivity extends AppCompatActivity {
 
         // batalkan kirim bukti pembayaran
         binding.view11.setOnClickListener(view -> {
+            if(paymentProof == null) {
+                Toast.makeText(PemesananDetailActivity.this, "Ups, tidak ada gambar yang di unggah!", Toast.LENGTH_SHORT).show();
+                return;
+            }
             paymentProof = null;
             binding.paymentProofBtn.setText("Choose Image");
         });
@@ -92,6 +95,11 @@ public class PemesananDetailActivity extends AppCompatActivity {
     }
 
     private void sendPaymentProof() {
+
+        if(paymentProof == null) {
+            Toast.makeText(PemesananDetailActivity.this, "Ups, anda harus mengunggah bukti pembayaran terlebih dahulu", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         Map<String, Object> payment = new HashMap<>();
         payment.put("paymentProof", paymentProof);
@@ -178,6 +186,7 @@ public class PemesananDetailActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         address = ""+documentSnapshot.get("address");
+                        binding.addressEt.setText(address);
                     }
                 });
     }

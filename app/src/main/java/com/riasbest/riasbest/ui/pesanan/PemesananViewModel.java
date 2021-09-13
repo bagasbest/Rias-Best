@@ -17,14 +17,14 @@ public class PemesananViewModel extends ViewModel {
     final ArrayList<PemesananModel> pemesananModelArrayList = new ArrayList<>();
     private static final String TAG = PemesananViewModel.class.getSimpleName();
 
-    public void setListOrderAll(String customerId) {
+    public void setListOrderAll(String customerId, String role) {
         pemesananModelArrayList.clear();
 
         try {
             FirebaseFirestore
                     .getInstance()
                     .collection("order")
-                    .whereEqualTo("customerId", customerId)
+                    .whereEqualTo(role, customerId)
                     .get()
                     .addOnCompleteListener(task -> {
 
@@ -57,14 +57,14 @@ public class PemesananViewModel extends ViewModel {
         }
     }
 
-    public void setListOrderByStatus(String customerId, String status) {
+    public void setListOrderByStatus(String customerId, String status, String  role) {
         pemesananModelArrayList.clear();
 
         try {
             FirebaseFirestore
                     .getInstance()
                     .collection("order")
-                    .whereEqualTo("customerId", customerId)
+                    .whereEqualTo(role, customerId)
                     .whereEqualTo("status", status)
                     .get()
                     .addOnCompleteListener(task -> {

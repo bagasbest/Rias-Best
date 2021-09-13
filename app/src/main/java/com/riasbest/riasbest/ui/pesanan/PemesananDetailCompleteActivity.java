@@ -44,7 +44,6 @@ public class PemesananDetailCompleteActivity extends AppCompatActivity {
         getAddress();
 
         binding.nameEt.setText(model.getPeriasName());
-        binding.addressEt.setText(address);
         binding.category.setText(model.getCategory());
 
         NumberFormat formatter = new DecimalFormat("#,###");
@@ -135,6 +134,8 @@ public class PemesananDetailCompleteActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         address = "" + documentSnapshot.get("address");
+                        binding.addressEt.setText(address);
+
                     }
                 });
     }

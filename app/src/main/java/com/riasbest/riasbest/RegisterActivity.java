@@ -116,6 +116,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         Map<String, Object> register = new HashMap<>();
         register.put("name", name);
+        register.put("nameTemp", name.toLowerCase());
         register.put("username", username);
         register.put("email", email);
         register.put("password", password);
