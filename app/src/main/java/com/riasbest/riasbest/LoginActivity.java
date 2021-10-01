@@ -79,6 +79,7 @@ public class LoginActivity extends AppCompatActivity {
         mProgressDialog.setCanceledOnTouchOutside(false);
         mProgressDialog.show();
 
+        // cek data pada database
         FirebaseAuth
                 .getInstance()
                 .signInWithEmailAndPassword(email, password)
@@ -96,6 +97,7 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
+    // tampilkan box jika gagal login
     private void showFailureDialog() {
         new AlertDialog.Builder(this)
                 .setTitle("Gagal Login")
@@ -107,7 +109,7 @@ public class LoginActivity extends AppCompatActivity {
                 .show();
     }
 
-
+    // auto login jika sudah login sebelumnya
     private void autoLogin() {
         if(user != null) {
             startActivity(new Intent(LoginActivity.this, HomepageActivity.class));
