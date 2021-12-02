@@ -4,17 +4,23 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.riasbest.riasbest.R;
 import com.riasbest.riasbest.databinding.ActivityPesananBinding;
@@ -30,6 +36,7 @@ public class PesananActivity extends AppCompatActivity {
     private ActivityPesananBinding binding;
     private PemesananModel model;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +48,9 @@ public class PesananActivity extends AppCompatActivity {
 
         // ambil alamat perias
         getAddress();
+
+        // get role
+        checkRole();
 
 
         NumberFormat formatter = new DecimalFormat("#,###");
@@ -102,6 +112,38 @@ public class PesananActivity extends AppCompatActivity {
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             dialog.show();
 
+        });
+
+
+        binding.beginWork.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                ProgressDialog mProgressDialog = new ProgressDialog(PesananActivity.this);
+
+                mProgressDialog.setMessage("Mohon tunggu hingga proses selesai...");
+                mProgressDialog.setCanceledOnTouchOutside(false);
+                mProgressDialog.show();
+
+                FirebaseFirestore
+                        .getInstance()
+                        .collection("order")
+                        .document(model.getOrderId())
+                        .update("status", "Sedang Dikerjakan")
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if(task.isSuccessful()) {
+                                    mProgressDialog.dismiss();
+                                    binding.beginWork.setVisibility(View.GONE);
+                                    Toast.makeText(PesananActivity.this, "Anda mulai mengerjakan orderan ini!", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    mProgressDialog.dismiss();
+                                    Toast.makeText(PesananActivity.this, "Gagal memulai pengerjaan orderan ini, silahkan cek koneksi internet anda", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+            }
         });
     }
 
@@ -168,6 +210,26 @@ public class PesananActivity extends AppCompatActivity {
                 .get()
                 .addOnSuccessListener(documentSnapshot ->         binding.addressEt.setText(""+documentSnapshot.get("address")));
     }
+
+
+    private void checkRole() {
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        FirebaseFirestore
+                .getInstance()
+                .collection("users")
+                .document(uid)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if(("" + documentSnapshot.get("role")).equals("Perias") && model.getStatus().equals("Sudah Bayar")) {
+                            binding.beginWork.setVisibility(View.VISIBLE);
+                        }
+                    }
+                });
+    }
+
 
     @Override
     protected void onDestroy() {

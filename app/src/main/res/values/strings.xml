@@ -23,6 +23,7 @@
     <string-array name="status">
         <item>Belum Bayar</item>
         <item>Sudah Bayar</item>
+        <item>Sedang Dikerjakan</item>
         <item>Selesai</item>
     </string-array>
 

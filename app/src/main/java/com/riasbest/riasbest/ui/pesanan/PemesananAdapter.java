@@ -24,12 +24,13 @@ public class PemesananAdapter extends RecyclerView.Adapter<PemesananAdapter.View
 
     private final ArrayList<PemesananModel> listPemesanan = new ArrayList<>();
 
-    private String role;
+    private final String role;
 
     public PemesananAdapter(String role) {
         this.role = role;
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void setData(ArrayList<PemesananModel> items) {
         listPemesanan.clear();
         listPemesanan.addAll(items);

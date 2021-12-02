@@ -209,4 +209,22 @@
         app:layout_constraintEnd_toEndOf="@+id/view3"
         app:layout_constraintStart_toStartOf="@+id/view3" />
 
+
+    <Button
+        android:id="@+id/beginWork"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        android:backgroundTint="@color/primary"
+        android:text="Mulai Bekerja"
+        android:textAllCaps="false"
+        android:layout_marginBottom="30sp"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/view3"
+        app:layout_constraintStart_toStartOf="@+id/view3" />
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
