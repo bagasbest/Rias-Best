@@ -45,6 +45,7 @@ public class PemesananDetailCompleteActivity extends AppCompatActivity {
 
         binding.nameEt.setText(model.getPeriasName());
         binding.category.setText(model.getCategory());
+        binding.customerName.setText(model.getCustomerName());
 
         NumberFormat formatter = new DecimalFormat("#,###");
         binding.price.setText("Rp. " + formatter.format(Double.parseDouble(model.getPrice())));
