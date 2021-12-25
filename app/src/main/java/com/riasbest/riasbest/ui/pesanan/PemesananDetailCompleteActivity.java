@@ -50,7 +50,12 @@ public class PemesananDetailCompleteActivity extends AppCompatActivity {
         binding.price.setText("Rp. " + formatter.format(Double.parseDouble(model.getPrice())));
 
         if(model.getStatus().equals("Sudah Bayar")) {
+            binding.textView15.setText("Daftar Pesanan\nyang Sudah Dibayar");
+        } else if (model.getStatus().equals("Sedang Dikerjakan")) {
+            binding.textView15.setText("Daftar Pesanan\nyang Sedang Dikerjakan");
             binding.finishBtn.setVisibility(View.VISIBLE);
+        } else {
+            binding.textView15.setText("Daftar Pesanan\nyang Sudah Selesai");
         }
 
         binding.backButton.setOnClickListener(new View.OnClickListener() {

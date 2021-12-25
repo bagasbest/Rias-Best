@@ -88,28 +88,56 @@ public class PemesananAdapter extends RecyclerView.Adapter<PemesananAdapter.View
 
             if (role.equals("Pelanggan")) {
 
-                if (model.getStatus().equals("Belum Bayar")) {
-                    view.setBackgroundTintList(ContextCompat.getColorStateList(itemView.getContext(), android.R.color.holo_red_dark));
-                    cv.setOnClickListener(view -> {
-                        Intent intent = new Intent(itemView.getContext(), PemesananDetailActivity.class);
-                        intent.putExtra(PemesananDetailActivity.EXTRA_ORDER, model);
-                        itemView.getContext().startActivity(intent);
-                    });
-                } else {
-                    view.setBackgroundTintList(ContextCompat.getColorStateList(itemView.getContext(), android.R.color.holo_green_dark));
-                    cv.setOnClickListener(view -> {
-                        Intent intent = new Intent(itemView.getContext(), PemesananDetailCompleteActivity.class);
-                        intent.putExtra(PemesananDetailCompleteActivity.EXTRA_ORDER, model);
-                        itemView.getContext().startActivity(intent);
-                    });
+                switch (model.getStatus()) {
+                    case "Belum Bayar":
+                        view.setBackgroundTintList(ContextCompat.getColorStateList(itemView.getContext(), android.R.color.holo_red_dark));
+                        cv.setOnClickListener(view -> {
+                            Intent intent = new Intent(itemView.getContext(), PemesananDetailActivity.class);
+                            intent.putExtra(PemesananDetailActivity.EXTRA_ORDER, model);
+                            itemView.getContext().startActivity(intent);
+                        });
+                        break;
+                    case "Sudah Bayar":
+                        view.setBackgroundTintList(ContextCompat.getColorStateList(itemView.getContext(), android.R.color.holo_orange_dark));
+                        cv.setOnClickListener(view -> {
+                            Intent intent = new Intent(itemView.getContext(), PemesananDetailCompleteActivity.class);
+                            intent.putExtra(PemesananDetailCompleteActivity.EXTRA_ORDER, model);
+                            itemView.getContext().startActivity(intent);
+                        });
+                        break;
+                    case "Sedang Dikerjakan":
+                        view.setBackgroundTintList(ContextCompat.getColorStateList(itemView.getContext(), android.R.color.holo_blue_dark));
+                        cv.setOnClickListener(view -> {
+                            Intent intent = new Intent(itemView.getContext(), PemesananDetailCompleteActivity.class);
+                            intent.putExtra(PemesananDetailCompleteActivity.EXTRA_ORDER, model);
+                            itemView.getContext().startActivity(intent);
+                        });
+                        break;
+                    default:
+                        view.setBackgroundTintList(ContextCompat.getColorStateList(itemView.getContext(), android.R.color.holo_green_dark));
+                        cv.setOnClickListener(view -> {
+                            Intent intent = new Intent(itemView.getContext(), PemesananDetailCompleteActivity.class);
+                            intent.putExtra(PemesananDetailCompleteActivity.EXTRA_ORDER, model);
+                            itemView.getContext().startActivity(intent);
+                        });
+                        break;
                 }
 
             } else {
 
-                if (model.getStatus().equals("Belum Bayar")) {
-                    view.setBackgroundTintList(ContextCompat.getColorStateList(itemView.getContext(), android.R.color.holo_red_dark));
-                } else {
-                    view.setBackgroundTintList(ContextCompat.getColorStateList(itemView.getContext(), android.R.color.holo_green_dark));
+                switch (model.getStatus()) {
+                    case "Belum Bayar":
+                        view.setBackgroundTintList(ContextCompat.getColorStateList(itemView.getContext(), android.R.color.holo_red_dark));
+                        break;
+                    case "Sudah Bayar":
+                        view.setBackgroundTintList(ContextCompat.getColorStateList(itemView.getContext(), android.R.color.holo_orange_dark));
+                        break;
+                    case "Sedang Dikerjakan":
+                        view.setBackgroundTintList(ContextCompat.getColorStateList(itemView.getContext(), android.R.color.holo_blue_dark));
+                        break;
+                    default:
+                        view.setBackgroundTintList(ContextCompat.getColorStateList(itemView.getContext(), android.R.color.holo_green_dark));
+                        break;
                 }
 
                 cv.setOnClickListener(view -> {

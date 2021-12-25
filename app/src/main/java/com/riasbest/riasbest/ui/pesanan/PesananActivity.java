@@ -60,15 +60,23 @@ public class PesananActivity extends AppCompatActivity {
 
 
         // cek apakah sudah bayar atau belum
-        if(model.getStatus().equals("Sudah Bayar")) {
+        if (model.getStatus().equals("Sudah Bayar")) {
             binding.textView15.setText("Daftar Pesanan\nyang Sudah Dibayar");
             binding.textView6.setVisibility(View.VISIBLE);
             binding.paymentProof.setVisibility(View.VISIBLE);
-            binding.finishBtn.setVisibility(View.VISIBLE);
             Glide.with(this)
                     .load(model.getPaymentProof())
                     .into(binding.paymentProof);
-        } else {
+        } else if(model.getStatus().equals("Sedang Dikerjakan")) {
+            binding.finishBtn.setVisibility(View.VISIBLE);
+            binding.textView15.setText("Daftar Pesanan\nyang Sedang Dikerjakan");
+            binding.textView6.setVisibility(View.VISIBLE);
+            binding.paymentProof.setVisibility(View.VISIBLE);
+            Glide.with(this)
+                    .load(model.getPaymentProof())
+                    .into(binding.paymentProof);
+        }
+        else {
             binding.textView15.setText("Daftar Pesanan");
         }
 
@@ -119,30 +127,42 @@ public class PesananActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                ProgressDialog mProgressDialog = new ProgressDialog(PesananActivity.this);
+                new AlertDialog.Builder(PesananActivity.this)
+                        .setTitle("Konfirmasi Memulai Pengerjaan")
+                        .setMessage("Apakah kamu yakin ingin memulai pengerjaan orderan ini ?")
+                        .setIcon(R.drawable.ic_baseline_warning_24)
+                        .setPositiveButton("YA", (dialogInterface, i) -> {
 
-                mProgressDialog.setMessage("Mohon tunggu hingga proses selesai...");
-                mProgressDialog.setCanceledOnTouchOutside(false);
-                mProgressDialog.show();
+                            ProgressDialog mProgressDialog = new ProgressDialog(PesananActivity.this);
 
-                FirebaseFirestore
-                        .getInstance()
-                        .collection("order")
-                        .document(model.getOrderId())
-                        .update("status", "Sedang Dikerjakan")
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if(task.isSuccessful()) {
-                                    mProgressDialog.dismiss();
-                                    binding.beginWork.setVisibility(View.GONE);
-                                    Toast.makeText(PesananActivity.this, "Anda mulai mengerjakan orderan ini!", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    mProgressDialog.dismiss();
-                                    Toast.makeText(PesananActivity.this, "Gagal memulai pengerjaan orderan ini, silahkan cek koneksi internet anda", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
+                            mProgressDialog.setMessage("Mohon tunggu hingga proses selesai...");
+                            mProgressDialog.setCanceledOnTouchOutside(false);
+                            mProgressDialog.show();
+
+                            FirebaseFirestore
+                                    .getInstance()
+                                    .collection("order")
+                                    .document(model.getOrderId())
+                                    .update("status", "Sedang Dikerjakan")
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                dialogInterface.dismiss();
+                                                mProgressDialog.dismiss();
+                                                binding.beginWork.setVisibility(View.GONE);
+                                                Toast.makeText(PesananActivity.this, "Anda mulai mengerjakan orderan ini!", Toast.LENGTH_SHORT).show();
+                                            } else {
+                                                dialogInterface.dismiss();
+                                                mProgressDialog.dismiss();
+                                                Toast.makeText(PesananActivity.this, "Gagal memulai pengerjaan orderan ini, silahkan cek koneksi internet anda", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
+
+                        })
+                        .setNegativeButton("TIDAK", null)
+                        .show();
             }
         });
     }
@@ -169,7 +189,7 @@ public class PesananActivity extends AppCompatActivity {
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull @NotNull Task<Void> task) {
-                        if(task.isSuccessful()) {
+                        if (task.isSuccessful()) {
                             showSuccessDialog();
                         } else {
                             showFailureDialog();
@@ -208,7 +228,7 @@ public class PesananActivity extends AppCompatActivity {
                 .collection("users")
                 .document(model.getPeriasId())
                 .get()
-                .addOnSuccessListener(documentSnapshot ->         binding.addressEt.setText(""+documentSnapshot.get("address")));
+                .addOnSuccessListener(documentSnapshot -> binding.addressEt.setText("" + documentSnapshot.get("address")));
     }
 
 
@@ -223,7 +243,7 @@ public class PesananActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        if(("" + documentSnapshot.get("role")).equals("Perias") && model.getStatus().equals("Sudah Bayar")) {
+                        if (("" + documentSnapshot.get("role")).equals("Perias") && model.getStatus().equals("Sudah Bayar")) {
                             binding.beginWork.setVisibility(View.VISIBLE);
                         }
                     }
