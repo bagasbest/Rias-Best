@@ -37,6 +37,9 @@ public class PemesananActivity extends AppCompatActivity {
     private ActivityPemesananBinding binding;
     private String category;
     private String dateTime;
+    private String pelaksanaan;
+    private Long dateTimeInLong;
+    private Long pelaksanaanInLong;
     private final ArrayList<String> categoryList = new ArrayList<>();
 
     @Override
@@ -76,6 +79,14 @@ public class PemesananActivity extends AppCompatActivity {
             }
         });
 
+        // pilih tanggal pelaksanaan
+        binding.pelaksanaan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getPelaksanaan();
+            }
+        });
+
         // klik pesan
         binding.view2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,6 +112,9 @@ public class PemesananActivity extends AppCompatActivity {
         } else if (category == null) {
             Toast.makeText(PemesananActivity.this, "Kategori tidak boleh kosong!", Toast.LENGTH_SHORT).show();
             return;
+        } else if (pelaksanaanInLong < dateTimeInLong) {
+            Toast.makeText(PemesananActivity.this, "Waktu pelaksanaan harus diatas waktu pemesanan", Toast.LENGTH_SHORT).show();
+            return;
         }
 
 
@@ -122,6 +136,7 @@ public class PemesananActivity extends AppCompatActivity {
         order.put("periasId", model.getUid());
         order.put("price", price);
         order.put("dateTime", dateTime);
+        order.put("pelaksanaan", pelaksanaan);
         order.put("category", category);
         order.put("status", "Belum Bayar");
         order.put("paymentProof", "");
@@ -175,8 +190,20 @@ public class PemesananActivity extends AppCompatActivity {
         datePicker.show(getSupportFragmentManager(), datePicker.toString());
         datePicker.addOnPositiveButtonClickListener(selection -> {
             SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-            dateTime = sdf.format(new Date(Long.parseLong(selection.toString())));
+            dateTimeInLong = Long.parseLong(selection.toString());
+            dateTime = sdf.format(new Date(dateTimeInLong));
             binding.dateTime.setText(dateTime);
+        });
+    }
+
+    private void getPelaksanaan() {
+        MaterialDatePicker datePicker = MaterialDatePicker.Builder.datePicker().setCalendarConstraints(new CalendarConstraints.Builder().setValidator(DateValidatorPointForward.now()).build()).build();
+        datePicker.show(getSupportFragmentManager(), datePicker.toString());
+        datePicker.addOnPositiveButtonClickListener(selection -> {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+            pelaksanaanInLong = Long.parseLong(selection.toString());
+            pelaksanaan = sdf.format(new Date(pelaksanaanInLong));
+            binding.pelaksanaan.setText(pelaksanaan);
         });
     }
 

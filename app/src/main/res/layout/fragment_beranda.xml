@@ -10,11 +10,13 @@
         android:id="@+id/searchEt"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:hint="Cari Perias Wajah"
+        android:hint="Cari Nama Perias"
         android:textColor="@color/black"
         android:drawableStart="@drawable/ic_baseline_search_24"
         android:drawablePadding="10dp"
-        android:layout_margin="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:inputType="text"
         android:paddingStart="10dp"
         android:textColorHint="@color/black"
@@ -24,6 +26,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:importantForAutofill="no" />
+
+    <ImageButton
+        android:id="@+id/favorite"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:visibility="gone"
+        android:contentDescription="@string/image"
+        android:src="@drawable/ic_baseline_favorite_24"
+        android:background="@drawable/bg_rounded"
+        android:backgroundTint="@color/bg_search"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/roundedImageView"

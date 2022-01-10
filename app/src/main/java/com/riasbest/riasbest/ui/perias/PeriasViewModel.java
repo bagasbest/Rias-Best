@@ -40,6 +40,7 @@ public class PeriasViewModel extends ViewModel {
                                 perias.setAddress("" + document.get("address"));
                                 perias.setUsername("" + document.get("username"));
                                 perias.setUid("" + document.get("uid"));
+                                perias.setFavoritedBy((ArrayList<String>) document.get("favoritedBy"));
                                 String noRek = "" + document.get("rekening");
                                 if(noRek.equals("null")) {
                                     perias.setRekening("");
@@ -83,6 +84,8 @@ public class PeriasViewModel extends ViewModel {
                                 perias.setAddress("" + document.get("address"));
                                 perias.setUsername("" + document.get("username"));
                                 perias.setUid("" + document.get("uid"));
+                                perias.setFavoritedBy((ArrayList<String>) document.get("favoritedBy"));
+
                                 String noRek = "" + document.get("rekening");
                                 if(noRek.equals("null")) {
                                     perias.setRekening("");
@@ -101,9 +104,52 @@ public class PeriasViewModel extends ViewModel {
         }
     }
 
+    public void setPeriasListByFavorite(String uid) {
+        periasCategoryModelArrayList.clear();
+
+        try {
+            FirebaseFirestore
+                    .getInstance()
+                    .collection("users")
+                    .whereEqualTo("role", "Perias")
+                    .whereArrayContains("favoritedBy", uid)
+                    .get()
+                    .addOnCompleteListener(task -> {
+
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+
+                                PeriasModel perias = new PeriasModel();
+                                perias.setName("" + document.get("name"));
+                                perias.setDp("" + document.get("dp"));
+                                perias.setEmail("" + document.get("email"));
+                                perias.setRole("" + document.get("role"));
+                                perias.setAddress("" + document.get("address"));
+                                perias.setUsername("" + document.get("username"));
+                                perias.setUid("" + document.get("uid"));
+                                perias.setFavoritedBy((ArrayList<String>) document.get("favoritedBy"));
+
+                                String noRek = "" + document.get("rekening");
+                                if(noRek.equals("null")) {
+                                    perias.setRekening("");
+                                } else {
+                                    perias.setRekening(noRek);
+                                }
+                                periasCategoryModelArrayList.add(perias);
+                            }
+                            listPerias.postValue(periasCategoryModelArrayList);
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public LiveData<ArrayList<PeriasModel>> getPeriasList() {
         return listPerias;
     }
+
 
 }

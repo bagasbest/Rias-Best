@@ -60,7 +60,7 @@ public class PemesananAdapter extends RecyclerView.Adapter<PemesananAdapter.View
         ConstraintLayout cv;
         ImageView dp;
         View view;
-        TextView name, category, dateTime, status;
+        TextView name, category, dateTime, status, pelaksanaan;
 
         public ViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
@@ -71,6 +71,7 @@ public class PemesananAdapter extends RecyclerView.Adapter<PemesananAdapter.View
             name = itemView.findViewById(R.id.periasName);
             category = itemView.findViewById(R.id.category);
             dateTime = itemView.findViewById(R.id.dateTime);
+            pelaksanaan = itemView.findViewById(R.id.pelaksanaan);
             status = itemView.findViewById(R.id.status);
 
         }
@@ -84,6 +85,11 @@ public class PemesananAdapter extends RecyclerView.Adapter<PemesananAdapter.View
             name.setText("Nama Perias: " + model.getPeriasName());
             category.setText("Kategori: " + model.getCategory());
             dateTime.setText("Pemesanan: " + model.getDateTime());
+            if (!model.getPelaksanaan().equals("")) {
+                pelaksanaan.setText("Pelaksanaan: " + model.getPelaksanaan());
+            } else {
+                pelaksanaan.setText("Pelaksanaan: -");
+            }
             status.setText(model.getStatus());
 
             if (role.equals("Pelanggan")) {
@@ -91,6 +97,15 @@ public class PemesananAdapter extends RecyclerView.Adapter<PemesananAdapter.View
                 switch (model.getStatus()) {
                     case "Belum Bayar":
                         view.setBackgroundTintList(ContextCompat.getColorStateList(itemView.getContext(), android.R.color.holo_red_dark));
+                        cv.setOnClickListener(view -> {
+                            Intent intent = new Intent(itemView.getContext(), PemesananDetailActivity.class);
+                            intent.putExtra(PemesananDetailActivity.EXTRA_ORDER, model);
+                            itemView.getContext().startActivity(intent);
+                        });
+                        break;
+
+                    case "Menunggu":
+                        view.setBackgroundTintList(ContextCompat.getColorStateList(itemView.getContext(), android.R.color.holo_purple));
                         cv.setOnClickListener(view -> {
                             Intent intent = new Intent(itemView.getContext(), PemesananDetailActivity.class);
                             intent.putExtra(PemesananDetailActivity.EXTRA_ORDER, model);
@@ -128,6 +143,9 @@ public class PemesananAdapter extends RecyclerView.Adapter<PemesananAdapter.View
                 switch (model.getStatus()) {
                     case "Belum Bayar":
                         view.setBackgroundTintList(ContextCompat.getColorStateList(itemView.getContext(), android.R.color.holo_red_dark));
+                        break;
+                    case "Menunggu":
+                        view.setBackgroundTintList(ContextCompat.getColorStateList(itemView.getContext(), android.R.color.holo_purple));
                         break;
                     case "Sudah Bayar":
                         view.setBackgroundTintList(ContextCompat.getColorStateList(itemView.getContext(), android.R.color.holo_orange_dark));

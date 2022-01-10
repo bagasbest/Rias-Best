@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
@@ -26,6 +27,7 @@ import com.riasbest.riasbest.databinding.FragmentBerandaBinding;
 import com.riasbest.riasbest.ui.category.PeriasAddCategoryActivity;
 import com.riasbest.riasbest.ui.category.PeriasCategoryAdapter;
 import com.riasbest.riasbest.ui.category.PeriasCategoryViewModel;
+import com.riasbest.riasbest.ui.favorite.FavoriteActivity;
 import com.riasbest.riasbest.ui.perias.PeriasAdapter;
 import com.riasbest.riasbest.ui.perias.PeriasViewModel;
 
@@ -97,6 +99,13 @@ public class BerandaFragment extends Fragment {
             }
         });
 
+        binding.favorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), FavoriteActivity.class));
+            }
+        });
+
     }
 
     private void checkRole () {
@@ -114,6 +123,10 @@ public class BerandaFragment extends Fragment {
                             binding.customerRole.setVisibility(View.VISIBLE);
                             initRecylerViewCustomer();
                             initViewModelCustomer("all");
+                            binding.favorite.setVisibility(View.VISIBLE);
+                            ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams)binding.searchEt.getLayoutParams();
+                            layoutParams.setMarginEnd(250);
+                            binding.searchEt.setLayoutParams(layoutParams);
                         } else {
                             binding.periasRole.setVisibility(View.VISIBLE);
                             initRecylerViewPerias();

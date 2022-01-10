@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -64,6 +65,9 @@ public class PemesananDetailActivity extends AppCompatActivity {
             binding.buttons.setVisibility(View.VISIBLE);
         } else {
             binding.paymentProof.setVisibility(View.VISIBLE);
+            Glide.with(this)
+                    .load(model.getPaymentProof())
+                    .into(binding.paymentProof);
         }
 
         // kembali
@@ -103,7 +107,7 @@ public class PemesananDetailActivity extends AppCompatActivity {
 
         Map<String, Object> payment = new HashMap<>();
         payment.put("paymentProof", paymentProof);
-        payment.put("status", "Sudah Bayar");
+        payment.put("status", "Menunggu");
 
         FirebaseFirestore
                 .getInstance()
@@ -114,7 +118,7 @@ public class PemesananDetailActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull @NotNull Task<Void> task) {
                         if(task.isSuccessful()) {
-                            showSuccessDialog("Mengirimkan Bukti Pembayaran", "mengirimkan bukti pembayaran, selanjutnya kamu akan menemui");
+                            showSuccessDialogWaiting();
                         } else {
                             showFailureDialog("Mengirimkan Bukti Pembayaran", "mengirimkan bukti pembayaran");
                         }
@@ -168,6 +172,18 @@ public class PemesananDetailActivity extends AppCompatActivity {
         new AlertDialog.Builder(this)
                 .setTitle("Berhasil " + title)
                 .setMessage("Selamat, anda berhasil " + message + " perias wajah ini")
+                .setIcon(R.drawable.ic_baseline_check_circle_outline_24)
+                .setPositiveButton("OKE", (dialogInterface, i) -> {
+                    dialogInterface.dismiss();
+                    onBackPressed();
+                })
+                .show();
+    }
+
+    private void showSuccessDialogWaiting() {
+        new AlertDialog.Builder(this)
+                .setTitle("Berhasil Mengirim Bukti Pembayaran")
+                .setMessage("Selanjutnya, silahkan menunggu perias untuk memvalidasi bukti pembayaran anda")
                 .setIcon(R.drawable.ic_baseline_check_circle_outline_24)
                 .setPositiveButton("OKE", (dialogInterface, i) -> {
                     dialogInterface.dismiss();

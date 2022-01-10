@@ -88,7 +88,11 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
                         if(task.isSuccessful()) {
                             mProgressDialog.dismiss();
-                            startActivity(new Intent(LoginActivity.this, HomepageActivity.class));
+                            if(FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()) {
+                                startActivity(new Intent(LoginActivity.this, HomepageActivity.class));
+                            } else {
+                                showFailureDialogEmailVerification();
+                            }
                         } else {
                             mProgressDialog.dismiss();
                             showFailureDialog();
@@ -109,9 +113,22 @@ public class LoginActivity extends AppCompatActivity {
                 .show();
     }
 
+    // tampilkan box jika gagal login
+    private void showFailureDialogEmailVerification() {
+        new AlertDialog.Builder(this)
+                .setTitle("Gagal Login")
+                .setMessage("Mohon untuk melakukan verifikasi email anda terlebih dahulu, email verifikasi telah dikirimkan")
+                .setIcon(R.drawable.ic_baseline_clear_24)
+                .setPositiveButton("OKE", (dialogInterface, i) -> {
+                    FirebaseAuth.getInstance().getCurrentUser().sendEmailVerification();
+                    dialogInterface.dismiss();
+                })
+                .show();
+    }
+
     // auto login jika sudah login sebelumnya
     private void autoLogin() {
-        if(user != null) {
+        if(user != null && user.isEmailVerified()) {
             startActivity(new Intent(LoginActivity.this, HomepageActivity.class));
             finish();
         }

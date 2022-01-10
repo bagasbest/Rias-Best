@@ -22,6 +22,7 @@
 
     <string-array name="status">
         <item>Belum Bayar</item>
+        <item>Menunggu</item>
         <item>Sudah Bayar</item>
         <item>Sedang Dikerjakan</item>
         <item>Selesai</item>

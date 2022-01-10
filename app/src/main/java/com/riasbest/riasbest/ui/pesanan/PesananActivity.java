@@ -57,6 +57,7 @@ public class PesananActivity extends AppCompatActivity {
         binding.price.setText("Rp. " + formatter.format(Double.parseDouble(model.getPrice())));
         binding.nameEt.setText(model.getPeriasName());
         binding.category.setText(model.getCategory());
+        binding.customerName.setText(model.getCustomerName());
 
 
         // cek apakah sudah bayar atau belum
@@ -75,6 +76,14 @@ public class PesananActivity extends AppCompatActivity {
             Glide.with(this)
                     .load(model.getPaymentProof())
                     .into(binding.paymentProof);
+        } else if (model.getStatus().equals("Menunggu")) {
+            binding.textView15.setText("Daftar Pesanan\nyang Sedang Menunggu Validasi");
+            binding.textView6.setVisibility(View.VISIBLE);
+            binding.paymentProof.setVisibility(View.VISIBLE);
+            Glide.with(this)
+                    .load(model.getPaymentProof())
+                    .into(binding.paymentProof);
+            binding.accOrDecline.setVisibility(View.VISIBLE);
         }
         else {
             binding.textView15.setText("Daftar Pesanan");
@@ -165,6 +174,70 @@ public class PesananActivity extends AppCompatActivity {
                         .show();
             }
         });
+
+
+        binding.accPayment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showConfirmDialog("Konfirmasi Menerima Pembayaran", "Apakah anda yakin ingin menerima pembayaran dari pelanggan ini ?");
+            }
+        });
+
+        binding.declinePayment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showConfirmDialog("Konfirmasi Menolak Pembayaran", "Apakah anda yakin ingin menolak pembayaran dari pelanggan ini ?\n\nDengan menolak berarti pesanan ini akan terhapus dari daftar pesanan anda");
+            }
+        });
+    }
+
+    private void showConfirmDialog(String title, String desc) {
+        new AlertDialog.Builder(this)
+                .setTitle(title)
+                .setMessage(desc)
+                .setIcon(R.drawable.ic_baseline_warning_24)
+                .setPositiveButton("YA", (dialogInterface, i) -> {
+                    dialogInterface.dismiss();
+                   if(title.equals("Konfirmasi Menerima Pembayaran")) {
+                       FirebaseFirestore
+                               .getInstance()
+                               .collection("order")
+                               .document(model.getOrderId())
+                               .update("status", "Sudah Bayar")
+                               .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                   @Override
+                                   public void onComplete(@NonNull Task<Void> task) {
+                                       showCompleteAction("Berhasil Menerima Pembayaran");
+                                   }
+                               });
+                   } else {
+                       FirebaseFirestore
+                               .getInstance()
+                               .collection("order")
+                               .document(model.getOrderId())
+                               .delete()
+                               .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                   @Override
+                                   public void onComplete(@NonNull Task<Void> task) {
+                                       showCompleteAction("Berhasil Menolak Pembayaran");
+                                   }
+                               });
+                   }
+                })
+                .setNegativeButton("TIDAK", null)
+                .show();
+    }
+
+    private void showCompleteAction(String title) {
+        new AlertDialog.Builder(this)
+                .setTitle(title)
+                .setMessage("Silahkan melanjutkan aktivitas anda.")
+                .setIcon(R.drawable.ic_baseline_check_circle_outline_24)
+                .setPositiveButton("OKE", (dialogInterface, i) -> {
+                    dialogInterface.dismiss();
+                    onBackPressed();
+                })
+                .show();
     }
 
     private void showAlertFinish() {

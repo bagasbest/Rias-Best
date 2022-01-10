@@ -37,6 +37,7 @@ public class PemesananViewModel extends ViewModel {
                                 order.setCustomerId("" + document.get("customerId"));
                                 order.setCustomerName("" + document.get("customerName"));
                                 order.setDateTime("" + document.get("dateTime"));
+                                order.setPelaksanaan("" + document.get("pelaksanaan"));
                                 order.setDp("" + document.get("dp"));
                                 order.setOrderId("" + document.get("orderId"));
                                 order.setPaymentProof("" + document.get("paymentProof"));
@@ -78,6 +79,7 @@ public class PemesananViewModel extends ViewModel {
                                 order.setCustomerId("" + document.get("customerId"));
                                 order.setCustomerName("" + document.get("customerName"));
                                 order.setDateTime("" + document.get("dateTime"));
+                                order.setPelaksanaan("" + document.get("pelaksanaan"));
                                 order.setDp("" + document.get("dp"));
                                 order.setOrderId("" + document.get("orderId"));
                                 order.setPaymentProof("" + document.get("paymentProof"));

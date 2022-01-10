@@ -3,12 +3,16 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/TUBES_GALERI/RiasBest/app/src/main/res/layout/activity_login.xml" value="0.11499493414387031" />
+        <entry key="..\:/TUBES_GALERI/RiasBest/app/src/main/res/layout/activity_favorite.xml" value="0.23645833333333333" />
+        <entry key="..\:/TUBES_GALERI/RiasBest/app/src/main/res/layout/activity_login.xml" value="0.1" />
         <entry key="..\:/TUBES_GALERI/RiasBest/app/src/main/res/layout/activity_pemesanan.xml" value="0.2" />
         <entry key="..\:/TUBES_GALERI/RiasBest/app/src/main/res/layout/activity_pemesanan_detail.xml" value="0.264" />
         <entry key="..\:/TUBES_GALERI/RiasBest/app/src/main/res/layout/activity_pemesanan_detail_complete.xml" value="0.2" />
+        <entry key="..\:/TUBES_GALERI/RiasBest/app/src/main/res/layout/activity_perias_category.xml" value="0.264" />
         <entry key="..\:/TUBES_GALERI/RiasBest/app/src/main/res/layout/activity_pesanan.xml" value="0.264" />
-        <entry key="..\:/TUBES_GALERI/RiasBest/app/src/main/res/layout/fragment_pesanan.xml" value="0.11499493414387031" />
+        <entry key="..\:/TUBES_GALERI/RiasBest/app/src/main/res/layout/fragment_beranda.xml" value="0.264" />
+        <entry key="..\:/TUBES_GALERI/RiasBest/app/src/main/res/layout/fragment_pesanan.xml" value="0.2" />
+        <entry key="..\:/TUBES_GALERI/RiasBest/app/src/main/res/layout/item_pemesanan.xml" value="0.264" />
       </map>
     </option>
   </component>

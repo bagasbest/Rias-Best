@@ -11,6 +11,7 @@ public class PemesananModel implements Parcelable {
     private String category;
     private String dp;
     private String dateTime;
+    private String pelaksanaan;
     private String periasName;
     private String periasId;
     private String price;
@@ -28,12 +29,35 @@ public class PemesananModel implements Parcelable {
         category = in.readString();
         dp = in.readString();
         dateTime = in.readString();
+        pelaksanaan = in.readString();
         periasName = in.readString();
         periasId = in.readString();
         price = in.readString();
         paymentProof = in.readString();
         orderId = in.readString();
         status = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(customerId);
+        dest.writeString(customerName);
+        dest.writeString(customerEmail);
+        dest.writeString(category);
+        dest.writeString(dp);
+        dest.writeString(dateTime);
+        dest.writeString(pelaksanaan);
+        dest.writeString(periasName);
+        dest.writeString(periasId);
+        dest.writeString(price);
+        dest.writeString(paymentProof);
+        dest.writeString(orderId);
+        dest.writeString(status);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<PemesananModel> CREATOR = new Creator<PemesananModel>() {
@@ -96,6 +120,14 @@ public class PemesananModel implements Parcelable {
         this.dateTime = dateTime;
     }
 
+    public String getPelaksanaan() {
+        return pelaksanaan;
+    }
+
+    public void setPelaksanaan(String pelaksanaan) {
+        this.pelaksanaan = pelaksanaan;
+    }
+
     public String getPeriasName() {
         return periasName;
     }
@@ -142,26 +174,5 @@ public class PemesananModel implements Parcelable {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(customerId);
-        parcel.writeString(customerName);
-        parcel.writeString(customerEmail);
-        parcel.writeString(category);
-        parcel.writeString(dp);
-        parcel.writeString(dateTime);
-        parcel.writeString(periasName);
-        parcel.writeString(periasId);
-        parcel.writeString(price);
-        parcel.writeString(paymentProof);
-        parcel.writeString(orderId);
-        parcel.writeString(status);
     }
 }

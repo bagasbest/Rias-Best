@@ -3,6 +3,8 @@ package com.riasbest.riasbest.ui.perias;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+
 public class PeriasModel implements Parcelable {
 
     private String name;
@@ -14,6 +16,7 @@ public class PeriasModel implements Parcelable {
     private String address;
     private String dp;
     private String rekening;
+    private ArrayList<String> favoritedBy;
 
     public PeriasModel() {}
 
@@ -27,6 +30,7 @@ public class PeriasModel implements Parcelable {
         address = in.readString();
         dp = in.readString();
         rekening = in.readString();
+        favoritedBy = in.createStringArrayList();
     }
 
     @Override
@@ -40,6 +44,7 @@ public class PeriasModel implements Parcelable {
         dest.writeString(address);
         dest.writeString(dp);
         dest.writeString(rekening);
+        dest.writeStringList(favoritedBy);
     }
 
     @Override
@@ -129,5 +134,13 @@ public class PeriasModel implements Parcelable {
 
     public void setRekening(String rekening) {
         this.rekening = rekening;
+    }
+
+    public ArrayList<String> getFavoritedBy() {
+        return favoritedBy;
+    }
+
+    public void setFavoritedBy(ArrayList<String> favoritedBy) {
+        this.favoritedBy = favoritedBy;
     }
 }

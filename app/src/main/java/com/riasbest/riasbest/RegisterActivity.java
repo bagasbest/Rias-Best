@@ -134,8 +134,16 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull @NotNull Task<Void> task) {
                         if(task.isSuccessful()) {
-                            mProgressDialog.dismiss();
-                            showSuccessDialog();
+                            FirebaseAuth.getInstance().getCurrentUser().sendEmailVerification()
+                                    .addOnCompleteListener(task1 -> {
+                                        if(task1.isSuccessful()) {
+                                            mProgressDialog.dismiss();
+                                            showSuccessDialog();
+                                        } else {
+                                            mProgressDialog.dismiss();
+                                            showFailureDialog();
+                                        }
+                                    });
                         } else {
                             mProgressDialog.dismiss();
                             showFailureDialog();
@@ -159,7 +167,7 @@ public class RegisterActivity extends AppCompatActivity {
     private void showSuccessDialog() {
         new AlertDialog.Builder(this)
                 .setTitle("Berhasil melakukan registrasi")
-                .setMessage("Silahkan login")
+                .setMessage("Selanjutnya mohon verifikasi email anda melalui email yang anda daftarkan, kemudian lakukan verifikasi pada email yang Rias Best kirimkan.")
                 .setIcon(R.drawable.ic_baseline_check_circle_outline_24)
                 .setPositiveButton("OKE", (dialogInterface, i) -> {
                     dialogInterface.dismiss();
